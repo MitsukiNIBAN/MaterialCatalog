@@ -40,6 +40,18 @@ func main() {
 	}
 	defer db.Close()
 
+	rows, rowsErr := db.Query("SELECT * FROM id")
+	if rowsErr != nil {
+		fmt.Println("fetech data failed:", rowsErr.Error())
+		return
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var uid int
+		rows.Scan(&uid)
+		fmt.Println("uid:", uid)
+	}
+
 }
 
 func saveMsg(w http.ResponseWriter, r *http.Request) {
