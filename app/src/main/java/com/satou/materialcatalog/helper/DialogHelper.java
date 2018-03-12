@@ -5,4 +5,9 @@ package com.satou.materialcatalog.helper;
  */
 
 public class DialogHelper {
+    public static void toShow(){
+    }
+    public static void dismiss(){
+
+    }
 }

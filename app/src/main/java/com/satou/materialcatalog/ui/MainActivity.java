@@ -7,8 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.satou.materialcatalog.R;
+import com.satou.materialcatalog.entity.SaveStruct;
+import com.satou.materialcatalog.helper.DialogHelper;
 import com.satou.materialcatalog.presenter.MainPresenter;
 import com.satou.materialcatalog.presenter.contract.MainContract;
 
@@ -24,8 +27,6 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private SeekBar sbTimeLine;
     private Button btnSub;
-
-    private String str = "";
 
     private MainPresenter mPresenter;
 
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         sbTimeLine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                tvTime.setText(":" + (i<10?"0"+i:i));
+                tvTime.setText(":" + (i < 10 ? "0" + i : i));
             }
 
             @Override
@@ -69,5 +70,42 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         });
 
+    }
+
+    @Override
+    public void showLoading() {
+        DialogHelper.toShow();
+    }
+
+    @Override
+    public void dismissLoading() {
+        DialogHelper.dismiss();
+    }
+
+    @Override
+    public void showToast(String str) {
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public SaveStruct checkTextView() {
+        SaveStruct saveStruct = new SaveStruct();
+        if (etName != null) {
+            if (etName.getText() == null || etName.getText().toString().length() <= 0) {
+                showToast("请输入名字");
+                return null;
+            } else {
+                saveStruct.setName(etName.getText().toString());
+            }
+        }
+        if (etS != null) {
+            if (etS.getText() == null || etS.getText().toString().length() <= 0) {
+                showToast("请输入第几季");
+                return null;
+            } else {
+                saveStruct.setSeason(etS.getText().toString());
+            }
+        }
+        return null;
     }
 }
