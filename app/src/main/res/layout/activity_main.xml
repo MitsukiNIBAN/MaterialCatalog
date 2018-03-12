@@ -3,18 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ebebeb"
     android:orientation="vertical"
     android:padding="10dp"
     android:scrollbars="none"
-    android:background="#ebebeb"
     tools:context="com.satou.materialcatalog.ui.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/et_name"
@@ -30,65 +30,173 @@
             android:layout_height="0dp"
             android:layout_margin="5dp" />
 
-        <EditText
-            android:id="@+id/et_s"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
-            android:hint="第几季"
-            android:lines="1"
-            android:textSize="24sp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_s"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edit_text"
+                android:hint="第几季"
+                android:lines="1"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tv_ova"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/activity_main_tv_bg_normal"
+                android:clickable="true"
+                android:gravity="center"
+                android:minHeight="0dp"
+                android:text="OVA"
+                android:textColor="@drawable/activity_main_tv_text_normal"
+                android:textSize="24sp" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_margin="5dp" />
 
-        <EditText
-            android:id="@+id/et_ep"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
-            android:hint="第几集"
-            android:lines="1"
-            android:textSize="24sp" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_ep"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edit_text"
+                android:hint="第几集"
+                android:lines="1"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tv_op"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/activity_main_tv_bg_normal"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="OP"
+                android:textColor="@drawable/activity_main_tv_text_normal"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tv_ed"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"
+                android:background="@drawable/activity_main_tv_bg_normal"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="ED"
+                android:textColor="@drawable/activity_main_tv_text_normal"
+                android:textSize="24sp" />
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp" />
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="#dbdbdb" />
 
-        <EditText
-            android:id="@+id/et_type"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
-            android:hint="什么类型"
-            android:lines="1"
-            android:textSize="24sp"
-            android:enabled="false"
-            android:clickable="true"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="类型"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tv_type_add"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/activity_main_btn"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@drawable/activity_main_text"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_type_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp" />
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="#dbdbdb" />
 
-        <EditText
-            android:id="@+id/et_env"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_edit_text"
-            android:hint="哪个场景"
-            android:lines="1"
-            android:textSize="24sp"
-            android:enabled="false"
-            android:clickable="true"/>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="场景"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/tv_scene_add"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/activity_main_btn"
+                android:clickable="true"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@drawable/activity_main_text"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_scene_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp" />
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="#dbdbdb" />
 
 
         <LinearLayout
@@ -116,6 +224,7 @@
                 android:layout_weight="1"
                 android:lines="1"
                 android:text=":00"
+                android:textColor="@drawable/activity_main_tv_text_normal"
                 android:textSize="24sp" />
 
         </LinearLayout>
@@ -130,20 +239,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:max="59"
-            android:progress="0"/>
+            android:progress="0" />
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp" />
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="#dbdbdb" />
 
         <Button
             android:id="@+id/btn_sub"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/activity_main_btn"
             android:minHeight="0dp"
-            android:padding="13dp"
+            android:padding="10dp"
             android:text="提交"
+            android:textColor="@drawable/activity_main_text"
             android:textSize="18sp" />
     </LinearLayout>
 

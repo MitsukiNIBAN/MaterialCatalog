@@ -1,5 +1,7 @@
 package com.satou.materialcatalog.presenter.contract;
 
+import android.widget.TextView;
+
 import com.satou.materialcatalog.entity.SaveStruct;
 
 /**
@@ -9,9 +11,10 @@ import com.satou.materialcatalog.entity.SaveStruct;
 public interface MainContract {
     interface View{
         void showLoading();
-        void dismissLoading();
+        void hideLoading();
         void showToast(String str);
         SaveStruct checkTextView();
+        void clickTextView(TextView tv, int id, boolean isSelf);
     }
     interface Presenter{
         void sub();
