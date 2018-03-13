@@ -48,7 +48,7 @@ public class InputDialog extends Dialog {
         this.confirmClick = confirmClick;
     }
 
-    interface ConfirmClick {
+    public interface ConfirmClick {
         void confirm(String str);
     }
 }

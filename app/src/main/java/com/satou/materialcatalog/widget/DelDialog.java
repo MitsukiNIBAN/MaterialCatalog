@@ -39,7 +39,7 @@ public class DelDialog extends Dialog {
         this.delClick = delClick;
     }
 
-    interface DelClick {
+    public interface DelClick {
         void del();
     }
 }

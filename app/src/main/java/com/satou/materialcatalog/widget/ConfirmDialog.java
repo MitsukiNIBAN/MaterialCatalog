@@ -50,7 +50,7 @@ public class ConfirmDialog extends Dialog {
             message.setText(str);
     }
 
-    interface PositiveOnClick {
+    public interface PositiveOnClick {
         void onClick();
     }
 }
