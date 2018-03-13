@@ -21,4 +21,7 @@ public class Constant {
                 return "";
         }
     }
+
+    public static final int REQUEST_CODE_ADD_TYPE = 1;
+    public static final int REQUEST_CODE_ADD_SCENE = 2;
 }

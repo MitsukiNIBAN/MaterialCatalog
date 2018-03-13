@@ -217,13 +217,29 @@
                 android:textSize="24sp" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="分"
+                android:textColor="@drawable/activity_main_tv_text_normal"
+                android:textSize="24sp" />
+
+            <TextView
                 android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:lines="1"
+                android:text="00"
+                android:textColor="@drawable/activity_main_tv_text_normal"
+                android:textSize="24sp" />
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:layout_weight="1"
-                android:lines="1"
-                android:text=":00"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="秒"
                 android:textColor="@drawable/activity_main_tv_text_normal"
                 android:textSize="24sp" />
 
