@@ -46,7 +46,7 @@ public class ConfirmDialog extends Dialog {
     }
 
     public void setText(String str) {
-        if (str != null)
+        if (str != null && message != null)
             message.setText(str);
     }
 

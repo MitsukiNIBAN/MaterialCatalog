@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.satou.materialcatalog.R;
 import com.satou.materialcatalog.presenter.SelectPresenter;
@@ -50,23 +51,28 @@ public class SelectActivity extends AppCompatActivity implements SelectContract.
         inputDialog = new InputDialog(this);
         delDialog = new DelDialog(this);
         confirmDialog = new ConfirmDialog(this);
+
         mPresenter = new SelectPresenter(this, this);
         listView = findViewById(R.id.lv_data);
         addBtn = findViewById(R.id.btn_add);
         cancelBtn = findViewById(R.id.btn_cancel);
 
         cancelBtn.setOnClickListener(view -> cancel());
-        addBtn.setOnClickListener(view -> showInputDialog(click -> mPresenter.addItem()));
+        addBtn.setOnClickListener(view -> showInputDialog(str -> mPresenter.addItem(str)));
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<>());
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener((adapterView, view, position, id) -> {
             showConfirmDialog("确认添加？", () -> {
                 //这里设置数据返回MainAcitivty
+                Intent intent = new Intent();
+                intent.putExtra("key", adapter.getItem(position).toString() + "");
+                setResult(RESULT_OK, intent);
+                finish();
             });
         });
         listView.setOnItemLongClickListener((adapterView, view, position, id) -> {
-            showDelDialog(() -> mPresenter.delItem());
+            showDelDialog(() -> mPresenter.delItem(adapter.getItem(position).toString()));
             return true;
         });
     }
@@ -100,8 +106,13 @@ public class SelectActivity extends AppCompatActivity implements SelectContract.
     }
 
     @Override
+    public void showToast(String str) {
+        Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void showInputDialog(InputDialog.ConfirmClick click) {
-        if (inputDialog != null){
+        if (inputDialog != null) {
             inputDialog.setConfirmClick(click);
             inputDialog.show();
         }
@@ -128,9 +139,9 @@ public class SelectActivity extends AppCompatActivity implements SelectContract.
     @Override
     public void showConfirmDialog(String str, ConfirmDialog.PositiveOnClick click) {
         if (confirmDialog != null) {
-            confirmDialog.setText(str);
             confirmDialog.setPositiveOnClick(click);
             confirmDialog.show();
+            confirmDialog.setText(str);
         }
     }
 

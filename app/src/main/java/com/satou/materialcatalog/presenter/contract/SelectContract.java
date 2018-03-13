@@ -19,10 +19,11 @@ public interface SelectContract {
         void showDelDialog(DelDialog.DelClick click);
         void showConfirmDialog(String str, ConfirmDialog.PositiveOnClick click);
         void refreshData(List<String> data);
+        void showToast(String str);
     }
     interface Presenter{
-        void delItem();
-        void addItem();
+        void delItem(String str);
+        void addItem(String str);
         void loadData();
     }
 }

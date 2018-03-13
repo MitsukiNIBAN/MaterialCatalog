@@ -2,6 +2,7 @@ package com.satou.materialcatalog.presenter;
 
 import android.content.Context;
 
+import com.satou.materialcatalog.entity.SaveStruct;
 import com.satou.materialcatalog.presenter.contract.MainContract;
 
 /**
@@ -18,8 +19,14 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void sub() {
-        mView.checkTextView();
+    public void sub(SaveStruct saveStruct) {
+        mView.showLoading();
+
+        //以下数据正常
+        //向数据库插入数据
+        //插入结果
+        mView.hideLoading();
+        mView.showToast("插入结果");
     }
 
 }

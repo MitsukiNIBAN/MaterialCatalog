@@ -31,8 +31,7 @@
                 android:background="@null"
                 android:hint="此处输入"
                 android:lines="1"
-                android:minHeight="40dp"
-                android:inputType="number"/>
+                android:minHeight="40dp" />
         </LinearLayout>
 
         <View

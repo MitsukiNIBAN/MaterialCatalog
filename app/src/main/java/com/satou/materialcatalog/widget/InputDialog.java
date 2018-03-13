@@ -31,8 +31,8 @@ public class InputDialog extends Dialog {
         setCanceledOnTouchOutside(false);
 
         etInput = findViewById(R.id.et_input);
-        cancelBtn = findViewById(R.id.negativeButton);
-        confirmBtn = findViewById(R.id.positiveButton);
+        cancelBtn = findViewById(R.id.btn_ok);
+        confirmBtn = findViewById(R.id.btn_cancel);
 
         cancelBtn.setOnClickListener(view -> dismiss());
         confirmBtn.setOnClickListener(view -> {

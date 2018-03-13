@@ -1,8 +1,6 @@
 package com.satou.materialcatalog.ui;
 
-import android.app.usage.ConfigurationStats;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +18,7 @@ import com.satou.materialcatalog.entity.SaveStruct;
 import com.satou.materialcatalog.helper.DialogHelper;
 import com.satou.materialcatalog.presenter.MainPresenter;
 import com.satou.materialcatalog.presenter.contract.MainContract;
+import com.satou.materialcatalog.widget.ConfirmDialog;
 import com.satou.materialcatalog.widget.LoadingDialog;
 
 import org.w3c.dom.Text;
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     private MainPresenter mPresenter;
     private LoadingDialog loadingDialog;
+    private ConfirmDialog confirmDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +68,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                     case Constant.REQUEST_CODE_ADD_TYPE:
                         typeList.add(result);
                         //以下还要重载view
+                        refreshTypeList(typeList);
                         break;
                     case Constant.REQUEST_CODE_ADD_SCENE:
                         sceneList.add(result);
                         //以下还要重载view
+                        refreshSceneList(sceneList);
                         break;
                     default:
                         break;
                 }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -214,6 +216,30 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         }
     }
 
+    @Override
+    public void showConfirmDialog(String str, ConfirmDialog.PositiveOnClick click) {
+        if (confirmDialog != null) {
+            confirmDialog.setPositiveOnClick(click);
+            confirmDialog.show();
+            confirmDialog.setText(str);
+        }
+    }
+
+    @Override
+    public void refreshTypeList(List<String> data) {
+
+    }
+
+    @Override
+    public void refreshSceneList(List<String> data) {
+
+    }
+
+    @Override
+    public void clearPage() {
+        //插入成功后清空页面数据
+    }
+
     private Boolean isCheck(TextView tv, int id) {
         if (tv == null) return false;
         return !tv.getText().toString().equals(Constant.getName(id));
@@ -244,10 +270,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         typeList = new ArrayList<>();
         sceneList = new ArrayList<>();
         loadingDialog = new LoadingDialog(this);
+        confirmDialog = new ConfirmDialog(this);
     }
 
     private void setListener() {
-//        btnSub.setOnClickListener(view -> mPresenter.sub());
+        btnSub.setOnClickListener(view -> {
+            SaveStruct saveStruct = checkTextView();
+            if (saveStruct != null)
+                showConfirmDialog("确认提交数据？",
+                        () -> mPresenter.sub(saveStruct));
+        });
         tvOVA.setOnClickListener(view -> clickTextView((TextView) view, Constant.OVA, false));
         tvOP.setOnClickListener(view -> clickTextView((TextView) view, Constant.OP, false));
         tvED.setOnClickListener(view -> clickTextView((TextView) view, Constant.ED, false));
