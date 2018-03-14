@@ -48,6 +48,12 @@ public class InputDialog extends Dialog {
         this.confirmClick = confirmClick;
     }
 
+    @Override
+    public void show() {
+        super.show();
+        etInput.setText("");
+    }
+
     public interface ConfirmClick {
         void confirm(String str);
     }

@@ -5,6 +5,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -14,16 +16,12 @@ import android.widget.Toast;
 
 import com.satou.materialcatalog.Constant;
 import com.satou.materialcatalog.R;
-import com.satou.materialcatalog.entity.SaveStruct;
-import com.satou.materialcatalog.helper.DialogHelper;
 import com.satou.materialcatalog.presenter.MainPresenter;
 import com.satou.materialcatalog.presenter.contract.MainContract;
 import com.satou.materialcatalog.widget.ConfirmDialog;
+import com.satou.materialcatalog.widget.DelDialog;
 import com.satou.materialcatalog.widget.LoadingDialog;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements MainContract.View {
@@ -43,12 +41,11 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private SeekBar sbTimeLine;
     private Button btnSub;
 
-    private List<String> typeList;
-    private List<String> sceneList;
 
-    private MainPresenter mPresenter;
+    private MainContract.Presenter mPresenter;
     private LoadingDialog loadingDialog;
     private ConfirmDialog confirmDialog;
+    private DelDialog delDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,14 +63,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             if (result != null)
                 switch (requestCode) {
                     case Constant.REQUEST_CODE_ADD_TYPE:
-                        typeList.add(result);
-                        //以下还要重载view
-                        refreshTypeList(typeList);
+                        mPresenter.addType(result);
+//                        typeList.add(result);
+//                        //以下还要重载view
+//                        refreshTypeList(typeList);
                         break;
                     case Constant.REQUEST_CODE_ADD_SCENE:
-                        sceneList.add(result);
-                        //以下还要重载view
-                        refreshSceneList(sceneList);
+                        mPresenter.addScene(result);
+//                        sceneList.add(result);
+//                        //以下还要重载view
+//                        refreshSceneList(sceneList);
                         break;
                     default:
                         break;
@@ -99,73 +98,72 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public SaveStruct checkTextView() {
-        SaveStruct saveStruct = new SaveStruct();
+    public boolean checkTextView() {
         if (etName != null) {
             if (etName.getText() == null || etName.getText().toString().length() <= 0) {
                 showToast("请输入名字");
-                return null;
+                return false;
             } else {
-                saveStruct.setName(etName.getText().toString());
+                mPresenter.setName(etName.getText().toString());
             }
-        } else return null;
+        } else return false;
         if (etS != null) {
             if (etS.getText() == null || etS.getText().toString().length() <= 0) {
                 if (isCheck(tvOVA, Constant.OVA)) {
-                    saveStruct.setSeason(Constant.getName(Constant.OVA));
+                    mPresenter.setSeason(Constant.getName(Constant.OVA));
                 } else {
                     showToast("请输入第几季");
-                    return null;
+                    return false;
                 }
             } else {
-                saveStruct.setSeason(etS.getText().toString());
+                mPresenter.setSeason(etS.getText().toString());
             }
-        } else return null;
+        } else return false;
         if (etEp != null) {
             if (etEp.getText() == null || etEp.getText().toString().length() <= 0) {
                 if (isCheck(tvOP, Constant.OP)) {
-                    saveStruct.setEpisode(Constant.getName(Constant.OP));
+                    mPresenter.setEpisode(Constant.getName(Constant.OP));
                 } else if (isCheck(tvED, Constant.ED)) {
-                    saveStruct.setEpisode(Constant.getName(Constant.ED));
+                    mPresenter.setEpisode(Constant.getName(Constant.ED));
                 } else {
                     showToast("请输入第几集");
-                    return null;
+                    return false;
                 }
             } else {
-                saveStruct.setSeason(etEp.getText().toString());
+                mPresenter.setSeason(etEp.getText().toString());
             }
-        } else return null;
+        } else return false;
 
-        if (typeList.size() <= 0) {
-            showToast("未添加类型");
-            return null;
+        if (mPresenter.haveType()) {
+            mPresenter.setType();
         } else {
-            saveStruct.setType(typeList);
+            showToast("未添加类型");
+            return false;
         }
 
-        if (sceneList.size() <= 0) {
-            showToast("未添加场景");
-            return null;
+        if (mPresenter.haveScene()) {
+            mPresenter.setScene();
         } else {
-            saveStruct.setScene(sceneList);
+            showToast("未添加场景");
+            return false;
         }
 
         if (etTime != null) {
             if (etTime.getText() == null || etTime.getText().toString().length() <= 0) {
                 showToast("请输入分钟");
-                return null;
+                return false;
             } else {
                 try {
-                    saveStruct.setTime(etTime.getText().toString() + "分" + tvTime.getText().toString() + "秒");
+                    mPresenter.setTime(etTime.getText().toString() + "分" + tvTime.getText().toString() + "秒");
                 } catch (Exception e) {
                     e.printStackTrace();
-                    return null;
+                    return false;
                 }
             }
 
-        } else return null;
+        } else return false;
 
-        return saveStruct;
+        return true;
     }
 
     @Override
@@ -227,17 +225,69 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
     @Override
     public void refreshTypeList(List<String> data) {
+        llTypeList.removeAllViews();
+        for (String str : data) {
+            View view = LayoutInflater.from(this).inflate(R.layout.item_data, null);
+            TextView tvData = view.findViewById(R.id.tv_data);
+            tvData.setText(str + "");
+            llTypeList.addView(view);
 
+            view.setLongClickable(true);
+            view.setOnLongClickListener(v -> {
+                showDel(() -> {
+                    mPresenter.removeType(tvData.getText().toString());
+                    return;
+                });
+                return true;
+            });
+        }
     }
 
     @Override
     public void refreshSceneList(List<String> data) {
+        llSceneAdd.removeAllViews();
+        for (String str : data) {
+            View view = LayoutInflater.from(this).inflate(R.layout.item_data, null);
+            TextView tvData = view.findViewById(R.id.tv_data);
+            tvData.setText(str + "");
+            llSceneAdd.addView(view);
 
+            view.setLongClickable(true);
+            view.setOnLongClickListener(v -> {
+                showDel(() -> {
+                    mPresenter.removeScene(tvData.getText().toString());
+                    return;
+                });
+                return true;
+            });
+        }
     }
 
     @Override
     public void clearPage() {
         //插入成功后清空页面数据
+        try {
+            etName.setText("");
+            etS.setText("");
+            etEp.setText("");
+            etTime.setText("");
+            tvTime.setText("00");
+            clickTextView(tvOVA, Constant.OVA, true);
+            clickTextView(tvOP, Constant.OP, true);
+            clickTextView(tvED, Constant.ED, true);
+            sbTimeLine.setProgress(0);
+            mPresenter.clearData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void showDel(DelDialog.DelClick click) {
+        if (delDialog != null) {
+            delDialog.setDelClick(click);
+            delDialog.show();
+        }
     }
 
     private Boolean isCheck(TextView tv, int id) {
@@ -267,18 +317,16 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         btnSub = findViewById(R.id.btn_sub);
 
-        typeList = new ArrayList<>();
-        sceneList = new ArrayList<>();
         loadingDialog = new LoadingDialog(this);
         confirmDialog = new ConfirmDialog(this);
+        delDialog = new DelDialog(this);
     }
 
     private void setListener() {
         btnSub.setOnClickListener(view -> {
-            SaveStruct saveStruct = checkTextView();
-            if (saveStruct != null)
+            if (checkTextView())
                 showConfirmDialog("确认提交数据？",
-                        () -> mPresenter.sub(saveStruct));
+                        () -> mPresenter.sub());
         });
         tvOVA.setOnClickListener(view -> clickTextView((TextView) view, Constant.OVA, false));
         tvOP.setOnClickListener(view -> clickTextView((TextView) view, Constant.OP, false));

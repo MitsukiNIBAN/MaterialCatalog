@@ -26,6 +26,7 @@ import java.util.List;
  */
 
 public class SelectActivity extends AppCompatActivity implements SelectContract.View {
+
     private SelectContract.Presenter mPresenter;
 
     private ListView listView;

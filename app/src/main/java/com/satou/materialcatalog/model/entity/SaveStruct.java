@@ -1,4 +1,4 @@
-package com.satou.materialcatalog.entity;
+package com.satou.materialcatalog.model.entity;
 
 import java.util.List;
 
@@ -15,6 +15,17 @@ public class SaveStruct {
     private List<String> type;
     private List<String> scene;
     private String getTime;
+
+    public void reset(){
+        name = "";
+        id = "";
+        episode = "";
+        season = "";
+        time = "";
+        type.clear();
+        scene.clear();
+        getTime = "";
+    }
 
     public String getName() {
         return name;
