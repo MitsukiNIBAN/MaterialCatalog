@@ -22,8 +22,8 @@ public interface SelectContract {
         void showToast(String str);
     }
     interface Presenter{
-        void delItem(String str);
-        void addItem(String str);
-        void loadData();
+        void delItem(String str, int page);
+        void addItem(String str, int page);
+        void loadData(int page);
     }
 }

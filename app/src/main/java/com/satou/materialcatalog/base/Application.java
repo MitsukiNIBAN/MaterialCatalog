@@ -17,6 +17,6 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         INSTANCE = this;
-        DatabaseHelper.getInstance().getReadableDatabase();
+//        DatabaseHelper.getInstance().getReadableDatabase();
     }
 }

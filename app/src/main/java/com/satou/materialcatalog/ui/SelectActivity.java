@@ -3,6 +3,7 @@ package com.satou.materialcatalog.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,7 @@ import java.util.List;
 
 public class SelectActivity extends AppCompatActivity implements SelectContract.View {
 
+    private final String TAG = "SelectActivity";
     private SelectContract.Presenter mPresenter;
 
     private ListView listView;
@@ -59,21 +61,19 @@ public class SelectActivity extends AppCompatActivity implements SelectContract.
         cancelBtn = findViewById(R.id.btn_cancel);
 
         cancelBtn.setOnClickListener(view -> cancel());
-        addBtn.setOnClickListener(view -> showInputDialog(str -> mPresenter.addItem(str)));
+        addBtn.setOnClickListener(view -> showInputDialog(str -> mPresenter.addItem(str, page)));
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, android.R.id.text1, new ArrayList<>());
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener((adapterView, view, position, id) -> {
-            showConfirmDialog("确认添加？", () -> {
-                //这里设置数据返回MainAcitivty
-                Intent intent = new Intent();
-                intent.putExtra("key", adapter.getItem(position).toString() + "");
-                setResult(RESULT_OK, intent);
-                finish();
-            });
-        });
+        listView.setOnItemClickListener((adapterView, view, position, id) -> showConfirmDialog("确认添加？", () -> {
+            //这里设置数据返回MainAcitivty
+            Intent intent = new Intent();
+            intent.putExtra("key", adapter.getItem(position).toString() + "");
+            setResult(RESULT_OK, intent);
+            finish();
+        }));
         listView.setOnItemLongClickListener((adapterView, view, position, id) -> {
-            showDelDialog(() -> mPresenter.delItem(adapter.getItem(position).toString()));
+            showDelDialog(() -> mPresenter.delItem(adapter.getItem(position).toString(), page));
             return true;
         });
     }
@@ -81,7 +81,7 @@ public class SelectActivity extends AppCompatActivity implements SelectContract.
     @Override
     protected void onResume() {
         super.onResume();
-        mPresenter.loadData();
+        mPresenter.loadData(page);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class SelectActivity extends AppCompatActivity implements SelectContract.
 
     @Override
     public void refreshData(List<String> data) {
-        if (data != null && data.size() > 0) {
+        if (data != null) {
             adapter.clear();
             adapter.addAll(data);
             adapter.notifyDataSetChanged();
@@ -113,9 +113,11 @@ public class SelectActivity extends AppCompatActivity implements SelectContract.
 
     @Override
     public void showInputDialog(InputDialog.ConfirmClick click) {
+        Log.e(TAG,"showInputDialog");
         if (inputDialog != null) {
-            inputDialog.setConfirmClick(click);
+            Log.e(TAG,"show");
             inputDialog.show();
+            inputDialog.setConfirmClick(click);
         }
     }
 
@@ -132,16 +134,16 @@ public class SelectActivity extends AppCompatActivity implements SelectContract.
     @Override
     public void showDelDialog(DelDialog.DelClick click) {
         if (delDialog != null) {
-            delDialog.setDelClick(click);
             delDialog.show();
+            delDialog.setDelClick(click);
         }
     }
 
     @Override
     public void showConfirmDialog(String str, ConfirmDialog.PositiveOnClick click) {
         if (confirmDialog != null) {
-            confirmDialog.setPositiveOnClick(click);
             confirmDialog.show();
+            confirmDialog.setPositiveOnClick(click);
             confirmDialog.setText(str);
         }
     }

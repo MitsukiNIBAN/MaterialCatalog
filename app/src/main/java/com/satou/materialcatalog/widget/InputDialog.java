@@ -4,6 +4,8 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -15,6 +17,7 @@ import com.satou.materialcatalog.R;
 
 public class InputDialog extends Dialog {
 
+    private final String TAG = "InputDialog";
     private EditText etInput;
     private Button cancelBtn;
     private Button confirmBtn;
@@ -31,13 +34,15 @@ public class InputDialog extends Dialog {
         setCanceledOnTouchOutside(false);
 
         etInput = findViewById(R.id.et_input);
-        cancelBtn = findViewById(R.id.btn_ok);
-        confirmBtn = findViewById(R.id.btn_cancel);
+        cancelBtn = findViewById(R.id.btn_cancel);
+        confirmBtn = findViewById(R.id.btn_ok);
 
         cancelBtn.setOnClickListener(view -> dismiss());
-        confirmBtn.setOnClickListener(view -> {
+        confirmBtn.setOnClickListener((View view) -> {
+            Log.e(TAG, "dismiss, confirmClick:" + (confirmClick == null));
             dismiss();
             if (confirmClick != null) {
+                Log.e(TAG, "confirmClick");
                 confirmClick.confirm(etInput.getText().toString());
             }
         });

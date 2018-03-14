@@ -217,8 +217,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void showConfirmDialog(String str, ConfirmDialog.PositiveOnClick click) {
         if (confirmDialog != null) {
-            confirmDialog.setPositiveOnClick(click);
             confirmDialog.show();
+            confirmDialog.setPositiveOnClick(click);
             confirmDialog.setText(str);
         }
     }
@@ -285,8 +285,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void showDel(DelDialog.DelClick click) {
         if (delDialog != null) {
-            delDialog.setDelClick(click);
             delDialog.show();
+            delDialog.setDelClick(click);
         }
     }
 

@@ -2,11 +2,16 @@ package com.satou.materialcatalog.presenter;
 
 import android.content.Context;
 
+import com.satou.materialcatalog.helper.DatabaseHelper;
 import com.satou.materialcatalog.model.entity.SaveStruct;
 import com.satou.materialcatalog.presenter.contract.MainContract;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Mitsuki on 2018/3/8.
@@ -30,14 +35,20 @@ public class MainPresenter implements MainContract.Presenter {
     @Override
     public void sub() {
         mView.showLoading();
-
-        //以下数据正常
-        //向数据库插入数据
-        //插入结果
-        mView.hideLoading();
-        mView.clearPage();
-
-        mView.showToast("插入结果");
+        Observable.just(DatabaseHelper.getInstance().subData(saveStruct))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(l -> {
+                    mView.hideLoading();
+                    if (l == 1) {
+                        mView.showToast("插入成功");
+                        mView.clearPage();
+                    } else if (l == -1) {
+                        mView.showToast("插入失败");
+                    } else {
+                        mView.showToast("出现异常");
+                    }
+                });
     }
 
     @Override
